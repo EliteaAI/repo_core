@@ -1,0 +1,117 @@
+<div class="flex-grow-1 d-flex overfow-auto overflow-y-scroll"> <!-- content -->
+  <div class="container-fluid">
+
+    <div class="card mt-3">
+      <div class="card-body">
+
+        <div id="users-toolbar">
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#new-user-modal"><i class="bi bi-plus"></i></button>
+        </div>
+
+        <table
+          id="users-table"
+          data-toggle="table"
+          data-toolbar="#users-toolbar"
+          data-show-refresh="true"
+          data-url="{{ tools.context.url_prefix }}/api/v1/repo_core/users"
+        >
+          <thead>
+            <tr>
+              <th
+                data-field="id"
+                data-width="10"
+                data-width-unit="%"
+              >
+                User ID
+              </th>
+              <th
+                data-field="email"
+                data-width="10"
+                data-width-unit="%"
+              >
+                User Email
+              </th>
+              <th
+                data-field="name"
+              >
+                User Name
+              </th>
+              <th
+                data-formatter="users_table_formatter"
+                data-events="users_table_events"
+                data-width="10"
+                data-width-unit="%"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+</div> <!-- /content -->
+
+<div class="modal fade" id="new-user-modal" tabindex="-1" aria-labelledby="new-user-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="new-user-modal-label">New user</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="new-user-modal-form">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" name="email" id="new-user-modal-form-email">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" id="new-user-modal-form-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="new-user-modal-save">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit-user-modal" tabindex="-1" aria-labelledby="edit-user-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="edit-user-modal-label">Edit user</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-user-modal-form">
+          <div class="mb-3">
+            <label class="form-label">ID</label>
+            <input type="text" class="form-control" name="id" id="edit-user-modal-form-id" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" name="email" id="edit-user-modal-form-email" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" id="edit-user-modal-form-name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Token</label>
+            <input type="text" class="form-control" name="token" id="edit-user-modal-form-token" readonly>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="edit-user-modal-save">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

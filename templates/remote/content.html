@@ -1,0 +1,194 @@
+<div class="flex-grow-1 d-flex overfow-auto overflow-y-scroll"> <!-- content -->
+  <div class="container-fluid">
+
+    <div class="card mt-3">
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col-2">
+            <p class="my-2">Manual</p>
+          </div>
+          <div class="col-8">
+            <input type="text" id="ipt-param" class="form-control form-control-alternative" placeholder="pylon-id-1:plugin_1,plugin_2;pylon-id-2:plugin_3">
+          </div>
+          <div class="col-2">
+            <div class="d-flex justify-content-end">
+              <button id="btn-manual" type="button" class="btn btn-secondary btn-sm m-1">Manual apply</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-2">
+            <p class="my-2">Plugins</p>
+          </div>
+          <div class="col-10">
+            <div class="d-flex justify-content-end">
+              <button id="btn-update" type="button" class="btn btn-secondary btn-sm m-1">Update selected</button>
+              <button id="btn-update-with-reqs" type="button" class="btn btn-secondary btn-sm m-1">Update selected (purge requirements)</button>
+              <button id="btn-purge-reqs" type="button" class="btn btn-secondary btn-sm m-1">Purge selected requirements</button>
+              <button id="btn-delete" type="button" class="btn btn-secondary btn-sm m-1">Delete selected</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-2">
+            <p class="my-2">Configs</p>
+          </div>
+          <div class="col-4"></div>
+          <div class="col-6">
+            <div class="d-flex justify-content-end">
+              <button id="btn-export-configs" type="button" class="btn btn-secondary btn-sm m-1">Export selected configs</button>
+              <button id="btn-import-configs" type="button" class="btn btn-secondary btn-sm m-1">Import configs</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-2">
+            <p class="my-2">Reload</p>
+          </div>
+          <div class="col-4"></div>
+          <div class="col-6">
+            <div class="d-flex justify-content-end">
+              <button id="btn-reload" type="button" class="btn btn-secondary btn-sm m-1">Reload selected</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+
+      <div id="remote-toolbar">
+        <p class="my-2">Remote</p>
+      </div>
+
+      <table
+        id="remote-table"
+        data-toggle="table"
+        data-toolbar="#remote-toolbar"
+        data-show-refresh="true"
+        data-click-to-select="false"
+        data-url="{{ tools.context.url_prefix }}/api/v1/repo_core/remote"
+      >
+        <thead>
+          <tr>
+            <th data-field="state" data-checkbox="true"></th>
+            <th
+              data-field="pylon_id"
+              data-sortable="true"
+              data-width="500"
+            >
+              Pylon
+            </th>
+            <th
+              data-field="name"
+              data-sortable="true"
+            >
+              Name
+            </th>
+            <th
+              data-field="description"
+              data-sortable="true"
+            >
+              Description
+            </th>
+            <th
+              data-field="prepared"
+              data-sortable="true"
+              data-width="50"
+            >
+              Prepared
+            </th>
+            <th
+              data-field="activated"
+              data-sortable="true"
+              data-width="50"
+            >
+              Activated
+            </th>
+            <th
+              data-field="local_version"
+              data-sortable="true"
+              data-width="50"
+            >
+              Local version
+            </th>
+            <th
+              data-field="repo_version"
+              data-sortable="true"
+              data-width="50"
+            >
+              Repo version
+            </th>
+            <th
+              data-formatter="remote_table_formatter"
+              data-events="remote_table_events"
+              data-width="50"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+      </table>
+
+    </div>
+  </div>
+
+  </div>
+</div> <!-- /content -->
+
+<div class="modal fade" id="modal-edit-config" tabindex="-1" aria-labelledby="modal-edit-config-label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modal-edit-config-label">Config: <span id="modal-edit-plugin"></span></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-edit-config">
+          <div class="mb-3">
+            <textarea class="col-12" rows="20" id="input-cfg-edit" name="cfg_edit"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-cfg-load">Load (merged)</button>
+        <button type="button" class="btn btn-secondary" id="btn-cfg-load-raw">Load (raw)</button>
+        <button type="button" class="btn btn-secondary" id="btn-cfg-save">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form id="form-export-configs" style="display: none;" method="post" action="{{ tools.context.url_prefix }}/api/v1/repo_core/remote" target="_blank">
+  <input type="hidden" id="form-export-configs-data" name="data" value="">
+  <input type="hidden" name="action" value="export_configs">
+</form>
+
+<div class="modal fade" id="modal-import-config" tabindex="-1" aria-labelledby="modal-import-config-label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modal-import-config-label">Import config ZIP</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-import-config">
+          <div class="mb-3">
+            <input type="file" id="input-cfg-import" name="cfg_zip" class="col-12">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-cfg-import">Import</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

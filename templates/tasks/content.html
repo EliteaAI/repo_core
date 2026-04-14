@@ -1,0 +1,131 @@
+<div class="flex-grow-1 d-flex overfow-auto overflow-y-scroll"> <!-- content -->
+  <div class="container-fluid pt-2">
+
+    <div class="card mt-3">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-2">
+            <p class="my-2">Tasks</p>
+          </div>
+          <div class="col-8"></div>
+          <div class="col-2">
+            <div class="d-flex justify-content-end">
+              <button id="btn-start-task" type="button" class="btn btn-secondary btn-sm my-1">Start task</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-4">
+            <select id="task-selector" class="form-select">
+              {% for item in task_list() %}
+              <option>{{ item }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-8">
+            <input type="text" id="task-param" class="form-control form-control-alternative" placeholder="Task parameter">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-2">
+            <p class="my-2">Invocations</p>
+          </div>
+          <div class="col-8"></div>
+          <div class="col-2">
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-secondary btn-sm my-1 refresh-table-button" data-target="#table-task">
+                <i class="bi bi-arrow-repeat"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table
+          id="table-task"
+          data-toggle="table"
+          data-url="{{ tools.context.url_prefix }}/api/v1/repo_core/tasks"
+        >
+          <thead>
+            <tr>
+              <th
+                data-field="task_id"
+                data-sortable="true"
+              >
+                Task ID
+              </th>
+              <th
+                data-field="requestor"
+                data-sortable="true"
+              >
+                Requestor
+              </th>
+              <th
+                data-field="runner"
+                data-sortable="true"
+              >
+                Runner
+              </th>
+              <th
+                data-field="status"
+                data-sortable="true"
+              >
+                Status
+              </th>
+              <th
+                data-field="meta"
+                data-sortable="true"
+              >
+                Meta
+              </th>
+              <th
+                data-field="node"
+                data-visible="false"
+              >
+                Node
+              </th>
+
+              <th
+                data-formatter="tasks_table_formatter"
+                data-events="tasks_table_events"
+                data-width="10"
+                data-width-unit="%"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div> <!-- /content -->
+
+<div class="modal fade" id="modal-task-logs" tabindex="-1" aria-labelledby="modal-task-logs-label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modal-task-logs-label">Logs: <span id="modal-logs-task"></span></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-logs">
+          <div class="mb-3">
+            <textarea class="col-12" rows="20" id="input-logs" readonly></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

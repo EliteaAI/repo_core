@@ -1,0 +1,87 @@
+<div class="flex-grow-1 d-flex overfow-auto overflow-y-scroll"> <!-- content -->
+  <div class="container-fluid">
+
+    <div class="card mt-3">
+      <div class="card-body">
+
+        <div id="pylons-toolbar">
+          <p class="my-2">Pylons</p>
+        </div>
+
+        <table
+          id="pylons-table"
+          data-toggle="table"
+          data-toolbar="#pylons-toolbar"
+          data-show-refresh="true"
+          data-url="{{ tools.context.url_prefix }}/api/v1/repo_core/pylons"
+        >
+          <thead>
+            <tr>
+              <th
+                data-field="pylon_id"
+              >
+                Pylon
+              </th>
+              <th
+                data-formatter="pylons_table_formatter"
+                data-events="pylons_table_events"
+                data-width="10"
+                data-width-unit="%"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+</div> <!-- /content -->
+
+<div class="modal fade" id="modal-pylon-logs" tabindex="-1" aria-labelledby="modal-pylon-logs-label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modal-pylon-logs-label">Logs: <span id="modal-logs-pylon"></span></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-logs">
+          <div class="mb-3">
+            <textarea class="col-12" rows="20" id="input-logs" readonly></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-pylon-config" tabindex="-1" aria-labelledby="modal-pylon-config-label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modal-pylon-config-label">Config: <span id="modal-config-pylon"></span></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-config">
+          <div class="mb-3">
+            <textarea class="col-12" rows="20" id="input-cfg-edit" name="cfg_edit"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-cfg-load">Load (merged)</button>
+        <button type="button" class="btn btn-secondary" id="btn-cfg-load-raw">Load (raw)</button>
+        <button type="button" class="btn btn-secondary" id="btn-cfg-save">Save</button>
+        <button type="button" class="btn btn-secondary" id="btn-cfg-restart">Restart</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

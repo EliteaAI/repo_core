@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ g.router.target.title }}{% if app_title %} - {{ app_title }}{% endif %}</title>
+    <link href="{{ url_for('repo_core.static', filename='vendor/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('repo_core.static', filename='vendor/css/bootstrap-icons.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('repo_core.static', filename='vendor/css/bootstrap-table.min.css') }}" rel="stylesheet">
+    {% if head_template %}{% include head_template %}{% endif %}
+  </head>
+  <body>
+    <!-- viewpoint -->
+    <div class="d-flex flex-column vh-100">
+      <!-- navbar -->
+      <nav class="navbar navbar-expand bg-body-tertiary">
+        <div class="container-fluid">
+          {%- if app_title %}
+          <a class="navbar-brand" href="{{ tools.context.router.make_target_url() }}">{{ app_title }}</a>
+          {%- endif %}
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav nav-pills w-100">
+              {%- macro render_section(section, dropdown_class="dropdown-menu") %}
+              {%- set subsections = tools.context.router.visible_subsections(section=section.key) %}
+              {%- if subsections %}
+              <li class="nav-item dropdown">
+                {%- if section.key == g.router.section %}
+                <a class="nav-link dropdown-toggle active" aria-current="page" href="{{ tools.context.router.make_url(section=section.key, subsection=None, page=None, slash=None) }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ section.title }}
+                </a>
+                {%- else %}
+                <a class="nav-link dropdown-toggle" href="{{ tools.context.router.make_url(section=section.key, subsection=None, page=None, slash=None) }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ section.title }}
+                </a>
+                {%- endif %}
+                <ul class="{{ dropdown_class }}">
+                  {%- for subsection in subsections %}
+                  {%- if subsection.key == g.router.subsection %}
+                  <li><a class="dropdown-item active" href="{{ tools.context.router.make_url(section=section.key, subsection=subsection.key, page=None, slash=None) }}">{{ subsection.title }}</a></li>
+                  {%- else %}
+                  <li><a class="dropdown-item" href="{{ tools.context.router.make_url(section=section.key, subsection=subsection.key, page=None, slash=None) }}">{{ subsection.title }}</a></li>
+                  {%- endif %}
+                  {%- endfor %}
+                </ul>
+              </li>
+              {%- else %}
+              <li class="nav-item">
+                {%- if section.key == g.router.section %}
+                <a class="nav-link active" aria-current="page" href="{{ tools.context.router.make_url(section=section.key, subsection=None, page=None, slash=None) }}">{{ section.title }}</a>
+                {%- else %}
+                <a class="nav-link" href="{{ tools.context.router.make_url(section=section.key, subsection=None, page=None, slash=None) }}">{{ section.title }}</a>
+                {%- endif %}
+              </li>
+              {%- endif %}
+              {%- endmacro %}
+              {%- for section in tools.context.router.visible_sections() if section.kind_kwargs.location != 'right' %}
+              {{ render_section(section) }}
+              {%- endfor %}
+              <div class="mx-auto"></div>
+              {%- for section in tools.context.router.visible_sections() if section.kind_kwargs.location == "right" %}
+              {{ render_section(section, dropdown_class="dropdown-menu dropdown-menu-end") }}
+              {%- endfor %}
+            </ul>
+          </div>
+        </div>
+      </nav> <!-- /navbar -->
+      {% if content_template %}{% include content_template %}{% endif %}
+    </div> <!-- /viewpoint -->
+    <script src="{{ url_for('repo_core.static', filename='vendor/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('repo_core.static', filename='vendor/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('repo_core.static', filename='vendor/js/bootstrap-table.min.js') }}"></script>
+    <script src="{{ url_for('repo_core.static', filename='vendor/js/vue.global.prod.js') }}"></script>
+    <script src="{{ url_for('repo_core.static', filename='vendor/js/socket.io.min.js') }}"></script>
+    <script src="{{ url_for('repo_core.static', filename='vendor/js/axios.min.js') }}"></script>
+    <script>
+      window.url_prefix = "{{ tools.context.url_prefix }}";
+      window.socket = io("/", {
+        path: window.url_prefix + "/socket.io/",
+      });
+    </script>
+    {% if script_template %}{% include script_template %}{% endif %}
+  </body>
+</html>
