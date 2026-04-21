@@ -7,7 +7,7 @@
 import yaml  # pylint: disable=E0401
 
 # pylint: disable=E0401
-from tools import web
+from tools import web, log
 
 
 class Method:  # pylint: disable=E1101,R0903
@@ -23,4 +23,5 @@ class Method:  # pylint: disable=E1101,R0903
                 Loader=yaml.SafeLoader,
             )
         except:  # pylint: disable=W0702
+            log.exception("Failed to load settings")
             return {}
